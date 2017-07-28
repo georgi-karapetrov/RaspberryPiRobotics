@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     
     listen(listenfd, 10);
     
-    setupPins();
+    SetupPins();
     
     printf("Server is up and running.\n");
     connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
             }
             else if (strcmp(recvBuff, "a") == 0)
             {
-                turnLeft();
+                TurnLeft();
                 usleep(SLEEP_INTERVAL_MICROSECONDS);
                 StopMotors();
             }
