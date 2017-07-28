@@ -3,14 +3,11 @@
 #include <softPwm.h>
 #include <unistd.h>
 
-#include "conio.h"
-
 #define MOTOR_A_FORWARD 10
 #define MOTOR_A_BACKWARD 9
 
 #define MOTOR_B_FORWARD 8
 #define MOTOR_B_BACKWARD 7
-
 
 // PWM
 #define FREQUENCY 20
@@ -21,7 +18,7 @@
 
 int speed = 30;
 
-void setupPWM()
+void SetupPWM()
 {
     softPwmCreate(MOTOR_A_FORWARD, STOP, PWM_RANGE);
     softPwmCreate(MOTOR_B_FORWARD, STOP, PWM_RANGE);
@@ -29,79 +26,79 @@ void setupPWM()
     softPwmCreate(MOTOR_B_BACKWARD, STOP, PWM_RANGE);
 }
 
-void motorAStop()
+void MotorAStop()
 {
     digitalWrite(MOTOR_A_FORWARD, LOW);
     digitalWrite(MOTOR_A_BACKWARD, LOW);
 }
 
-void motorBStop()
+void MotorBStop()
 {
     digitalWrite(MOTOR_B_FORWARD, LOW);
     digitalWrite(MOTOR_B_BACKWARD, LOW);
 }
 
-void stopMotors()
+void StopMotors()
 {
-    printf("stopMotors()\n");
-    motorAStop();
-    motorBStop();
+    printf("StopMotors()\n");
+    MotorAStop();
+    MotorBStop();
 }
-void motorAForward()
+void MotorAForward()
 {
     digitalWrite(MOTOR_A_FORWARD, HIGH);
     digitalWrite(MOTOR_A_BACKWARD, LOW);
 }
 
-void motorABackward()
+void MotorABackward()
 {
     digitalWrite(MOTOR_A_FORWARD, LOW);
     digitalWrite(MOTOR_A_BACKWARD, HIGH);
 }
 
-void motorBForward()
+void MotorBForward()
 {
     digitalWrite(MOTOR_B_FORWARD, HIGH);
     digitalWrite(MOTOR_B_BACKWARD, LOW);
 }
 
-void motorBBackward()
+void MotorBBackward()
 {
     digitalWrite(MOTOR_B_FORWARD, LOW);
     digitalWrite(MOTOR_B_BACKWARD, HIGH);
 }
 
-void moveForward()
+void MoveForward()
 {
-    printf("moveForward()\n");
-    motorAForward();
-    motorBForward();
+    printf("MoveForward()\n");
+    MotorAForward();
+    MotorBForward();
 }
 
-void moveBackward()
+void MoveBackward()
 {
-    printf("moveBackward()\n");
-    motorABackward();
-    motorBBackward();
+    printf("MoveBackward()\n");
+    MotorABackward();
+    MotorBBackward();
 }
 
-void turnLeft()
+void TurnLeft()
 {
-    printf("turnLeft()\n");
-//    motorBStop();
-    motorAForward();
-    motorBBackward();
+    printf("TurnLeft()\n");
+//    MotorBStop();
+    MotorAForward();
+    MotorBBackward();
 }
 
-void turnRight()
+void TurnRight()
 {
-    printf("turnRight()\n");
-//    motorAStop();
-    motorBForward();
-    motorABackward();
+    printf("TurnRight()\n");
+//    MotorAStop();
+    MotorBForward();
+    MotorABackward();
 }
 
-void pwmForward()
+void PWMForward()
 {
     softPwmWrite(MOTOR_A_FORWARD, speed);
     softPwmWrite(MOTOR_A_BACKWARD, STOP);
@@ -109,7 +106,7 @@ void pwmForward()
     softPwmWrite(MOTOR_B_BACKWARD, STOP);
 }
 
-void pwmStopMotors()
+void PWMStopMotors()
 {
     softPwmWrite(MOTOR_A_FORWARD, STOP);
     softPwmWrite(MOTOR_A_BACKWARD, STOP);
@@ -117,7 +114,7 @@ void pwmStopMotors()
     softPwmWrite(MOTOR_B_BACKWARD, STOP);
 }
 
-void setupPins()
+void SetupPins()
 {
     printf("Setting up pins...\n");
     wiringPiSetupGpio();
@@ -128,16 +125,16 @@ void setupPins()
     printf("Done.\n");
 }
 
-void alternatingForward(const int frequency, const int dutyCycle)
+void AlternatingForward(const int frequency, const int dutyCycle)
 {
     int i;
     for (i = 0; i < frequency; ++i)
     {
-        motorAForward();
+        MotorAForward();
         usleep(dutyCycle / 2);
-        motorAStop();
-        motorBForward();
+        MotorAStop();
+        MotorBForward();
         usleep(dutyCycle / 2);
-        motorBStop();
+        MotorBStop();
     }
 }
