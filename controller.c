@@ -88,15 +88,17 @@ void moveBackward()
 void turnLeft()
 {
     printf("turnLeft()\n");
-    motorBStop();
+//    motorBStop();
     motorAForward();
+    motorBBackward();
 }
 
 void turnRight()
 {
     printf("turnRight()\n");
-    motorAStop();
+//    motorAStop();
     motorBForward();
+    motorABackward();
 }
 
 void pwmForward()

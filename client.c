@@ -9,6 +9,7 @@
 #include <errno.h>
 #include <arpa/inet.h>
 #include <regex.h>
+#include <time.h>
 
 #include "conio.h"
 
@@ -21,9 +22,7 @@
 #define TURN_RIGHT_KEY 'd'
 #define STOP_MOTORS_KEY 'h'
 #define ESC_KEY 27
-//#define IP_REGEX "^( ( [0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5] )\\. ){3}( [0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5] )$"
-
-#define IP_REGEX "( ( 25[0-5] )|( 2[0-4][0-9] )|( 1[0-9][0-9] )|( [1-9][0-9] )|( [0-9] ) )[.]( ( 25[0-5] )|( 2[0-4][0-9] )|( 1[0-9][0-9] )|( [1-9][0-9] )|( [0-9] ) )\\.( ( 25[0-5] )|( 2[0-4][0-9] )|( 1[0-9][0-9] )|( [1-9][0-9] )|( [0-9] ) )[.]( ( 25[0-5] )|( 2[0-4][0-9] )|( 1[0-9][0-9] )|( [1-9][0-9] )|( [0-9] ) )"
+#define IP_REGEX "((25[0-5])|(2[0-4][0-9])|(1[0-9][0-9])|([1-9][0-9])|([0-9]))[.]((25[0-5])|(2[0-4][0-9])|(1[0-9][0-9])|([1-9][0-9])|([0-9]))[.]((25[0-5])|(2[0-4][0-9])|(1[0-9][0-9])|([1-9][0-9])|([0-9]))[.](( 25[0-5])|(2[0-4][0-9])|(1[0-9][0-9])|([1-9][0-9])|([0-9]))"
 
 int GetIPStringFromString( const char * str, char * dest )
 {
@@ -131,14 +130,14 @@ int EstablishConnection( const char * server_ip )
         printf( "Connection established.\n" );
         int ch;
 
-        while ( ( ch = getch(  ) ) != ESC_KEY ) {
+        while ( ( ch = getch() ) != ESC_KEY ) {
 
             write( sockfd, &ch, sizeof( ch ) );
             if ( ch == 'q' ) {
                 return 0;
             }
 
-            sleep( 1 );
+            usleep( 5000 );
         }
     }
 
