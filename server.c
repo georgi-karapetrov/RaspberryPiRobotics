@@ -15,6 +15,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <time.h>
+#include <signal.h>
 
 #include "controller.h"
 
@@ -31,15 +32,16 @@ void QuitProgram()
     exit(EXIT_SUCCESS);
 }
 
-void INTHandler(void)
+void INTHandler(int sig)
 {
+    signal(sig, SIG_IGN);
     printf("Interruption received.\n");
     QuitProgram();  
 }
 
 int main(int argc, char *argv[])
 {
-    int listenfd = v;
+    int listenfd = 0;
     struct sockaddr_in serv_addr;
     
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
