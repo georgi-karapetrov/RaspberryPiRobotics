@@ -24,7 +24,7 @@
 
 static int connfd = 0;
 
-void QuitProgram()
+void Quit()
 {
     printf("Exiting.\n");
     StopMotors();
@@ -35,12 +35,16 @@ void QuitProgram()
 void INTHandler(int sig)
 {
     signal(sig, SIG_IGN);
-    printf("Interruption received.\n");
-    QuitProgram();  
+    Quit(); 
 }
 
 int main(int argc, char *argv[])
 {
+    if (signal(SIGINT, INTHandler) == SIG_ERR)
+    {
+        printf("Can't catch SIGINT.\n");
+    }
+
     int listenfd = 0;
     struct sockaddr_in serv_addr;
     
@@ -59,8 +63,6 @@ int main(int argc, char *argv[])
     
     printf("Server is up and running.\n");
     connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
-    
-    signal(SIGINT, INTHandler);
 
     char recvBuff[32];
     while(1)
@@ -102,10 +104,10 @@ int main(int argc, char *argv[])
             }
             else if (strcmp(recvBuff, "q") == 0)
             {
-                QuitProgram();
+                Quit();
             }
         }
     }
 
-    close(connfd);
+    Quit();
 }
