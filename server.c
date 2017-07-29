@@ -21,9 +21,25 @@
 #define PORT 8080
 #define SLEEP_INTERVAL_MICROSECONDS 40000
 
+static int connfd = 0;
+
+void QuitProgram()
+{
+    printf("Exiting.\n");
+    StopMotors();
+    close(connfd);
+    exit(EXIT_SUCCESS);
+}
+
+void INTHandler(void)
+{
+    printf("Interruption received.\n");
+    QuitProgram();  
+}
+
 int main(int argc, char *argv[])
 {
-    int listenfd = 0, connfd = 0;
+    int listenfd = v;
     struct sockaddr_in serv_addr;
     
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -42,6 +58,8 @@ int main(int argc, char *argv[])
     printf("Server is up and running.\n");
     connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
     
+    signal(SIGINT, INTHandler);
+
     char recvBuff[32];
     while(1)
     {
@@ -82,10 +100,7 @@ int main(int argc, char *argv[])
             }
             else if (strcmp(recvBuff, "q") == 0)
             {
-                printf("Exiting.\n");
-                StopMotors();
-                close(connfd);
-                exit(EXIT_SUCCESS);
+                QuitProgram();
             }
         }
     }
