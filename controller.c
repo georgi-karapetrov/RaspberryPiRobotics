@@ -16,7 +16,7 @@
 #define ECHO 18
 
 // Distance sensor constants
-#define START_STOP_TIME_EPS 400
+#define START_STOP_TIME_EPS 4000
 #define SPEED_OF_SOUND 34326
 
 // PWM
@@ -139,6 +139,7 @@ void SetupDistanceSensorPins()
     printf("Setting up distance sensor pins...\n");
     pinMode(TRIGGER, OUTPUT);
     pinMode(ECHO, INPUT);
+    delay(30);
     printf("Done.\n");
 }
 
@@ -152,50 +153,32 @@ void SetupPins()
 void SendImpulse()
 {
     digitalWrite(TRIGGER, HIGH);
-    usleep(10);
+    delayMicroseconds(20);
     digitalWrite(TRIGGER, LOW);
 }
 
-unsigned int MillisecondsFromTimeval(struct timeval tv)
+int DistanceFromSensor()
 {
-    return (tv.tv_sec * 1000000 + tv.tv_usec) / 1000;
-}
-
-float DistanceFromSensor()
-{
-    struct timeval startTime, stopTime, deltaTime;
-
     SendImpulse();
-
+    
+    long startTime = micros();
     while (digitalRead(ECHO) == LOW)
     {
-        gettimeofday(&startTime, NULL);
+        startTime = micros();
     }
 
-    printf("start time = %d\n", MillisecondsFromTimeval(startTime));
-    
-    unsigned long deltaMilliseconds = 0;
+    long stopTime = 0;
     while (digitalRead(ECHO) == HIGH)
     {
-        gettimeofday(&stopTime, NULL);
-        timersub(&stopTime, &startTime, &deltaTime);
-
-        deltaMilliseconds = MillisecondsFromTimeval(deltaTime);
-        printf("delta = %d\n", deltaMilliseconds);
-
-        if (deltaMilliseconds >= START_STOP_TIME_EPS)
+        stopTime = micros();
+        printf("delta = %d\n", stopTime - startTime);
+        if (stopTime - startTime >= START_STOP_TIME_EPS)
         {
-            printf("Too close to see.\n");
-            stopTime = startTime;
-            timersub(&stopTime, &startTime, &deltaTime);
-            break;
+            return -1;
         }
     }
 
-    printf("stop time = %d\n", MillisecondsFromTimeval(stopTime));
-
-    float distance = (deltaMilliseconds * SPEED_OF_SOUND) / (2.0f * 1000);
-    printf("Distance is %f cm\n", distance);
+    int distance = (stopTime - startTime) / 58;
 
     return distance;
 }

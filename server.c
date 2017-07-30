@@ -104,8 +104,8 @@ int main(int argc, char *argv[])
             }
             else if (strcmp(recvBuff, "o") == 0)
             {
-                float d = DistanceFromSensor();
-                printf("Distance = %f\n", d);
+                int d = DistanceFromSensor();
+                printf("Distance = %d cm\n", d);
                 usleep(500000);
             }
             else if (strcmp(recvBuff, "q") == 0)
