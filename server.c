@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
 
     char recvBuff[32];
-    while(1)
+    while (1)
     {
         int n;
         while (n = read(connfd, recvBuff, sizeof(recvBuff)) > 0)
@@ -100,7 +100,6 @@ int main(int argc, char *argv[])
             {
                 printf("Issued a stop command.\n");
                 StopMotors();
-                
             }
             else if (strcmp(recvBuff, "o") == 0)
             {
