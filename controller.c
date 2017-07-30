@@ -172,10 +172,10 @@ int DistanceFromSensor()
     {
         stopTime = micros();
         printf("delta = %d\n", stopTime - startTime);
-        if (stopTime - startTime >= START_STOP_TIME_EPS)
-        {
-            return -1;
-        }
+//        if (stopTime - startTime >= START_STOP_TIME_EPS)
+//        {
+//            return -1;
+//        }
     }
 
     int distance = (stopTime - startTime) / 58;
