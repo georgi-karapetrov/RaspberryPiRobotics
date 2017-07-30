@@ -102,6 +102,12 @@ int main(int argc, char *argv[])
                 StopMotors();
                 
             }
+            else if (strcmp(recvBuff, "o") == 0)
+            {
+                float d = DistanceFromSensor();
+                printf("Distance = %f\n", d);
+                usleep(500000);
+            }
             else if (strcmp(recvBuff, "q") == 0)
             {
                 Quit();

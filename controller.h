@@ -8,4 +8,6 @@ void TurnLeft();
 void TurnRight();
 void StopMotors();
 
+float DistanceFromSensor();
+
 #endif
